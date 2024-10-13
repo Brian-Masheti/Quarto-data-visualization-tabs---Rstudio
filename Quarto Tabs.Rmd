@@ -1,0 +1,192 @@
+---
+title: "Using tabs in Quarto"
+author: "Masheti"
+date: "`r Sys.Date()`"
+format: 
+  html:
+    css: style.css
+    code-fold: true
+    code-tools: true
+editor: visual
+---
+
+## Introduction
+
+In the realm of data analysis and visualization, presenting findings in a clear, organized, and accessible manner is crucial. This document demonstrates the power and flexibility of Quarto in creating interactive and visually appealing data presentations using tabs. By leveraging Quarto's features, we can structure our analysis in a way that caters to diverse audiences, from data scientists to business stakeholders.
+
+### Why Use Tabs in Data Visualization?
+
+1. **Clarity and Organization**: Tabs allow us to compartmentalize different aspects of our analysis, making it easier for readers to navigate through complex information.
+
+2. **User-Friendly Interface**: By separating visualizations, interpretations, and code, we create a more intuitive user experience, allowing viewers to focus on the information most relevant to them.
+
+3. **Depth Without Clutter**: Tabs enable us to provide in-depth analysis and technical details without overwhelming the main presentation, striking a balance between comprehensive reporting and clarity.
+
+4. **Flexibility for Different Audiences**: We can cater to both technical and non-technical audiences within the same document. Those interested in the underlying code can easily access it, while others can focus on the visualizations and interpretations.
+
+5. **Enhanced Readability**: By organizing content into logical sections, we improve the overall readability and flow of the document, making it easier for readers to follow our analytical narrative.
+
+In this document, we'll explore various visualizations of penguin data, demonstrating how to effectively use Quarto tabs to present scatter plots, box plots, and bar charts. Each visualization will be accompanied by its interpretation and the underlying R code, neatly organized into separate tabs for a clean, professional presentation.
+
+Let's dive into our analysis and discover the power of tabbed data visualization in Quarto!
+
+```{r}
+library(ggplot2)
+library(palmerpenguins)
+```
+
+::: {.panel-tabset .nav-pills}
+
+## Scatterplot
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_point() +
+    labs(title = "Flipper Length vs Body Mass by Species",
+         x = "Flipper Length (mm)",
+         y = "Body Mass (g)") +
+    theme_minimal()
+
+```
+
+### Explanation of Flipper Length vs Body Mass Chart
+
+- **Species Differentiation**: The scatter plot clearly distinguishes three penguin species (Adelie, Chinstrap, and Gentoo) based on their flipper length and body mass.
+
+- **Positive Correlation**: There's a strong positive correlation between flipper length and body mass across all species, indicating that penguins with longer flippers generally have higher body mass.
+
+- **Gentoo Dominance**: Gentoo penguins (blue) consistently show larger flipper lengths and body masses compared to the other two species, clustering in the upper right of the plot.
+
+- **Adelie and Chinstrap Overlap**: Adelie (red) and Chinstrap (green) penguins show some overlap in their measurements, but Chinstrap penguins tend to have slightly larger flipper lengths for similar body masses.
+
+- **Intra-species Variation**: Each species shows internal variation in both flipper length and body mass, represented by the spread of points within each color group.
+
+- **Clear Separation**: There's a clear separation between Gentoo and the other two species, suggesting significant physical differences that could be related to evolutionary adaptations or environmental factors.
+
+
+## Boxplot
+
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = species, y = bill_length_mm, fill = species)) +
+    geom_boxplot() +
+    labs(title = "Bill Length Distribution by Species",
+         x = "Species",
+         y = "Bill Length (mm)") +
+    theme_minimal()
+
+```
+### Explanation of Bill Length Distribution Chart
+
+- **Species Comparison**: The box plot compares bill lengths across three penguin species: Adelie, Chinstrap, and Gentoo.
+
+- **Median Differences**: Chinstrap penguins have the highest median bill length, followed closely by Gentoo, while Adelie penguins have notably shorter bills on average.
+
+- **Variability**: Gentoo penguins show the largest variability in bill length, as indicated by their box plot's larger interquartile range.
+
+- **Outliers**: Both Chinstrap and Gentoo species display outliers (individual points) above their whiskers, suggesting some individuals with unusually long bills.
+
+- **Adelie Consistency**: Adelie penguins have the most consistent bill lengths, shown by their compact box plot with shorter whiskers.
+
+- **Overlap**: There's some overlap in bill lengths between Chinstrap and Gentoo penguins, but Adelie penguins are distinctly separate, indicating a potential identifying feature for this species.
+
+- **Evolutionary Implications**: The differences in bill length distributions might reflect adaptations to different feeding strategies or food sources among the species.
+
+## Barplot
+
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
+    geom_bar(stat = "summary", fun = "mean") +
+    labs(title = "Average Body Mass of Penguin Species",
+         x = "Species",
+         y = "Average Body Mass (g)") +
+    theme_minimal()
+```
+
+### Explanation of Average Body Mass Chart
+
+- **Species Comparison**: The bar chart compares the average body mass of three penguin species: Adelie, Chinstrap, and Gentoo.
+
+- **Gentoo Dominance**: Gentoo penguins have significantly higher average body mass compared to the other two species, standing out as the largest on average.
+
+- **Adelie and Chinstrap Similarity**: Adelie and Chinstrap penguins have similar average body masses, with Chinstrap being slightly heavier.
+
+- **Scale of Difference**: The difference in average body mass between Gentoo and the other two species is substantial, being about 1500g heavier.
+
+- **Ecological Implications**: The marked difference in body mass could indicate different ecological niches or adaptations to varying environmental conditions among the species.
+
+- **Potential for Further Analysis**: This chart suggests that body mass could be a key differentiator for Gentoo penguins, which might correlate with other physical or behavioral traits.
+
+
+
+## Area Chart
+
+```{r, message = FALSE, warning=FALSE}
+# Libraries
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(dplyr)
+  library(plotly)
+  library(hrbrthemes)
+})
+
+# Load dataset from github
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered.csv", header=T)
+data$date <- as.Date(data$date)
+
+# Usual area chart
+p <- data %>%
+  ggplot( aes(x=date, y=value)) +
+    geom_area(fill="#69b3a2", alpha=0.5) +
+    geom_line(color="#69b3a2") +
+    ylab("bitcoin price ($)") +
+    theme_ipsum()
+
+# Turn it interactive with ggplotly
+p <- ggplotly(p)
+p
+```
+
+### Explanation of the Chart
+
+- **Initial Stability**: The area chart shows the price of Bitcoin from 2012 to 2018. Initially, the price is quite stable, indicating that Bitcoin was not widely adopted yet.
+  
+- **Rapid Growth**: In late 2013, there's a significant spike in the price, which reflects growing interest and investment in Bitcoin, possibly due to media coverage or market speculation.
+
+- **Volatility**: Between 2014 and 2015, the price experiences considerable fluctuations. This could be due to market corrections, external regulatory factors, or changes in investor sentiment.
+
+- **Increase in Value**: From 2016 to 2017, the area under the curve rises sharply, suggesting that Bitcoin gained traction as a recognized investment asset.
+
+- **Market Correction**: In 2018, there’s a noticeable decline, indicating a market correction after the rapid growth in the previous year, which can be linked to increased scrutiny and potential regulatory actions against cryptocurrencies.
+
+
+
+## Box plot by Class
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+
+mpg %>%
+  ggplot( aes(x=reorder(class, hwy), y=hwy, fill=class)) + 
+    geom_boxplot() +
+    xlab("class") +
+    theme(legend.position="none")
+```
+
+### Explanation of Highway MPG Distribution Chart
+
+- **Vehicle Class Comparison**: The box plot compares highway miles per gallon (MPG) across seven different vehicle classes, from pickups to compact cars.
+
+- **Efficiency Trend**: There's a general trend of increasing fuel efficiency (higher MPG) as we move from larger vehicles (pickups, SUVs) to smaller ones (compact, subcompact).
+
+- **Pickup Inefficiency**: Pickup trucks show the lowest median MPG and the smallest variability, consistent with their larger size and power requirements.
+
+- **Compact Efficiency**: Compact and subcompact cars demonstrate the highest median MPG, reflecting their smaller size and focus on fuel economy.
+
+- **Variability**: Subcompact and compact cars show the largest variability in MPG, suggesting a wide range of models or technologies within these classes.
+
+- **Outliers**: Several classes, particularly subcompact and compact, show outliers with exceptionally high MPG, possibly representing hybrid or highly efficient models.
+
+- **Midsize Compromise**: Midsize cars sit in the middle of the MPG range, offering a balance between size and fuel efficiency.
+
+- **SUV Surprise**: SUVs show slightly better MPG than expected, possibly due to the inclusion of smaller, more fuel-efficient SUV models in recent years.
+
+::: 
