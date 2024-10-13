@@ -12,7 +12,7 @@ This project demonstrates the use of Quarto for creating interactive and visuall
 ## How to Use
 
 1. Clone this repository
-2. Open the .qmd file in RStudio or your preferred Quarto-compatible IDE
+2. Open the .rmd file in RStudio or your preferred Quarto-compatible IDE
 3. Render the document to see the output
 
 ## Sample Visualizations
