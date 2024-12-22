@@ -15,9 +15,6 @@ This project demonstrates the use of Quarto for creating interactive and visuall
 2. Open the .rmd file in RStudio or your preferred Quarto-compatible IDE
 3. Render the document to see the output
 
-## Sample Visualizations
-
-[You can add screenshots or GIFs of your visualizations here]
 
 ## Technologies Used
 
